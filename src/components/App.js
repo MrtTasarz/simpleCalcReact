@@ -4,31 +4,33 @@ import Layout from './Layout'
 import * as math from 'mathjs';
 
 class App extends React.Component {
-  state = { term: '' }
+  state = { prev: '', present: '' }
 
   numberValue = (value) => {
-    let isDot = this.state.term.toString()
+    let isDot = this.state.present.toString()
     if (value === '.' && isDot.indexOf('.') !== -1) {
       return
     } else {
-      this.setState({ term: this.state.term + value })
+      this.setState({ present: this.state.present + value })
     }
   }
 
   calcEqual = () => {
-    this.setState({ term: math.evaluate(this.state.term) })
+    this.setState({ prev: this.state.present, present: math.evaluate(this.state.present) })
   }
 
   clearDisplay = () => {
-    this.setState({ term: '' })
+    this.setState({ present: '', prev: '' })
   }
   render() {
     return (
       <div className="main">
-        <div className="calc">{this.state.term}</div>
 
+        <div className="calc">
+          <div className="prev">{this.state.prev}</div>
+          <div className="present"> {this.state.present}</div>
+        </div>
         <Layout numberSubmit={this.numberValue} clearAll={this.clearDisplay} equalVal={this.calcEqual} />
-
       </div>
     )
   }
